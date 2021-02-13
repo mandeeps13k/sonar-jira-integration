@@ -6,7 +6,7 @@ from jira import JIRA
 import os
 import slack
 import time
-options = {'server' : 'https://naspersclassifieds.atlassian.net'}
+options = {'server' : 'https://example.atlassian.net'}
 jira_username = sys.argv[1]
 jira_api_token = sys.argv[2]
 sq_project = sys.argv[3]
@@ -30,7 +30,7 @@ for item in vulnerability_list[:]:
 			vulnerability_path = item["component"]
 			vulnerability_code_line = item["line"]
 			vulnerability_author = item["author"]
-			vulnerability_sonar_url = "https://sonarqube.horizontals.olx.org/project/issues?id="+project_name+"&open="+str(vulnerability_key)+"&resolved=false&types=VULNERABILITY"
+			vulnerability_sonar_url = "http://sonarqube?id="+project_name+"&open="+str(vulnerability_key)+"&resolved=false&types=VULNERABILITY"
 			vulnerability_information = "Summary:"+str(vulnerability_description)+"\nFile Path :"+str(vulnerability_path)+"\nLine:"+str(vulnerability_code_line)+"\nSonar URL:"+str(vulnerability_sonar_url)+"\nAuthor="+str(vulnerability_author)
 
 
@@ -40,12 +40,12 @@ for item in vulnerability_list[:]:
 			issues = jira.search_issues(tmp)
 			print(issues)
 			print(vulnerability_author)
-			vulnerable_assignee = vulnerability_author.replace("@olx.com","")
+			vulnerable_assignee = vulnerability_author.replace("@example.com","")
 			print(vulnerable_assignee)
 			client.chat_postMessage(channel="pan-security-alerts",text=vulnerability_information+str("\n------------------------------------------------------"))
 
 			if len(issues)==0:
-				new_issue = jira.create_issue(project='SEC',summary = vulnerability_description, description = vulnerability_information,issuetype={'name':'Security Issue'},labels=[vulnerability_key,'SonarQube-Panamera'])
+				new_issue = jira.create_issue(project='SEC',summary = vulnerability_description, description = vulnerability_information,issuetype={'name':'Security Issue'},labels=[vulnerability_key,'SonarQube'])
 				print("New Issue Created")
 				vulnerable_assign = jira.search_users(vulnerable_assignee)
 				if len(vulnerable_assign)==1:
@@ -53,4 +53,4 @@ for item in vulnerability_list[:]:
 					pass
 				else :
 					pass
-					new_issue.update(assignee={'name':'mandeep.kapoor'})
+					new_issue.update(assignee={'name':'name'})
