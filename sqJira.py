@@ -12,6 +12,7 @@ jira_api_token = sys.argv[2]
 sq_project = sys.argv[3]
 slack_token = sys.argv[4]
 
+#THISISTEST
 
 project_name = str(sq_project)
 print(project_name)
